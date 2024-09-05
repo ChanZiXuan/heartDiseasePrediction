@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 
 # Load your logistic regression model
-Model = joblib.load('heartdisease_logisticregression.joblib')
+lr_model = load('heartdisease_logisticregression.joblib')
 
 # Streamlit application starts here
 def main():
