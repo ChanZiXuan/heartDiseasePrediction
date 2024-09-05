@@ -50,7 +50,8 @@ input_data = pd.DataFrame({
     'ExerciseAngina': [exercise_angina],
     'Oldpeak': [oldpeak],
     'ST_Slope': [st_slope]
-
+})
+    
 # Predict Button
 if st.button("Predict Heart Disease"):
     # Make prediction
