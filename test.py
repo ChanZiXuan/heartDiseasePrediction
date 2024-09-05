@@ -58,7 +58,7 @@ if st.button("Predict Heart Disease"):
      prediction = lr_model.predict(input_data)
 
     # Display prediction result
-    if prediction[0] == 1:
+    if prediction[0] == 1 :
         st.write("This person has heart disease.")
     else:
         st.write("This person does not have heart disease.")
