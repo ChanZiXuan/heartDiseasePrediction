@@ -37,18 +37,27 @@ exercise_angina = 1 if exercise_angina == "Yes" else 0
 st_slope_mapping = {"Up": 0, "Flat": 1, "Down": 2}
 st_slope = st_slope_mapping[st_slope]
 
-# Prepare input data as a numpy array (no column names are needed)
-input_data = np.array([[age, sex, chest_pain_type, resting_bp, cholesterol, fasting_bs, resting_ecg, max_hr, exercise_angina, oldpeak, st_slope]])
-
+# Prepare input data as a pandas DataFrame (with column names)
+input_data = pd.DataFrame({
+    'Age': [age],
+    'Sex': [sex],
+    'ChestPainType': [chest_pain_type],
+    'RestingBP': [resting_bp],
+    'Cholesterol': [cholesterol],
+    'FastingBS': [fasting_bs],
+    'RestingECG': [resting_ecg],
+    'MaxHR': [max_hr],
+    'ExerciseAngina': [exercise_angina],
+    'Oldpeak': [oldpeak],
+    'ST_Slope': [st_slope]
 
 # Predict Button
 if st.button("Predict Heart Disease"):
     # Make prediction
-    if input_data:
-        predict_and_display([input_data])
+     prediction = lr_model.predict(input_data)
 
     # Display prediction result
-    if predict_and_display[0] == 1:
+    if prediction[0] == 1:
         st.write("This person has heart disease.")
     else:
         st.write("This person does not have heart disease.")
