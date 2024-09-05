@@ -37,38 +37,38 @@ exercise_angina = 1 if exercise_angina == "Yes" else 0
 st_slope_mapping = {"Up": 0, "Flat": 1, "Down": 2}
 st_slope = st_slope_mapping[st_slope]
 
-input_data = np.array([[age, sex, chest_pain_type, resting_bp, cholesterol, fasting_bs, resting_ecg, max_hr, exercise_angina, oldpeak, st_slope]])
+# input_data = np.array([[age, sex, chest_pain_type, resting_bp, cholesterol, fasting_bs, resting_ecg, max_hr, exercise_angina, oldpeak, st_slope]])
 
-# input_data = pd.DataFrame({
-#     'Age': [age],
-#     'Sex': [sex],
-#     'ChestPainType': [chest_pain_type],
-#     'RestingBP': [resting_bp],
-#     'Cholesterol': [cholesterol],
-#     'FastingBS': [fasting_bs],
-#     'RestingECG': [resting_ecg],
-#     'MaxHR': [max_hr],
-#     'ExerciseAngina': [exercise_angina],
-#     'Oldpeak': [oldpeak],
-#     'ST_Slope': [st_slope]
-# })
-
-# Ensure input data is a 2D array (reshape)
-input_data = np.array(input_data).reshape(1, -1)
+input_data = pd.DataFrame({
+    'Age': [age],
+    'Sex': [sex],
+    'ChestPainType': [chest_pain_type],
+    'RestingBP': [resting_bp],
+    'Cholesterol': [cholesterol],
+    'FastingBS': [fasting_bs],
+    'RestingECG': [resting_ecg],
+    'MaxHR': [max_hr],
+    'ExerciseAngina': [exercise_angina],
+    'Oldpeak': [oldpeak],
+    'ST_Slope': [st_slope]
+})
 
 # Check if the input data contains any invalid types
 st.write("Input Data:")
 st.write(input_data)
 
+# Ensure input is in correct 2D format for prediction (convert DataFrame to NumPy array)
+input_array = input_data.values.reshape(1, -1)  # Convert DataFrame to NumPy array without column names
+
 # Check for missing values
-if np.isnan(input_data).any():
-    st.write("Warning: Some input fields are missing. Please fill all the fields.")
+if np.isnan(input_array).any():
+    st.write("Warning: Some input fields are missing.")
 else:
     # When the user clicks the 'Predict' button, make the prediction
     if st.button("Predict Heart Disease"):
         # Use the model to make a prediction
         try:
-            prediction = lr_model.predict(input_data)
+            prediction = lr_model.predict(input_array)
             # Show the result
             if prediction[0] == 1:
                 st.write("The model predicts that this person has heart disease.")
