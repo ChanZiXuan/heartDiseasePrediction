@@ -53,16 +53,20 @@ input_data = pd.DataFrame({
     'ST_Slope': [st_slope]
 })
 
-# Check if the input data contains any invalid types
-st.write("Input Data:")
+# Check the input data structure
+st.write("Input Data (Pandas DataFrame):")
 st.write(input_data)
 
-# Ensure input is in correct 2D format for prediction (convert DataFrame to NumPy array)
-input_array = input_data.values.reshape(1, -1)  # Convert DataFrame to NumPy array without column names
+# Ensure input is in correct 2D format for prediction (convert DataFrame to NumPy array without column names)
+input_array = input_data.to_numpy()
 
-# Check for missing values
+# Check if the input is now a NumPy array and correctly shaped
+st.write("Converted Input Data (NumPy Array):")
+st.write(input_array)
+
+# Check for missing values or invalid inputs
 if np.isnan(input_array).any():
-    st.write("Warning: Some input fields are missing.")
+    st.write("Warning: Some input fields are missing or invalid.")
 else:
     # When the user clicks the 'Predict' button, make the prediction
     if st.button("Predict Heart Disease"):
