@@ -44,10 +44,11 @@ input_data = np.array([[age, sex, chest_pain_type, resting_bp, cholesterol, fast
 # Predict Button
 if st.button("Predict Heart Disease"):
     # Make prediction
-    prediction = lr_model.predict(input_data)
+    if input_data:
+        predict_and_display([input_data])
 
     # Display prediction result
-    if prediction[0] == 1:
-        st.success(f'This person has heart disease.')
+    if predict_and_display[0] == 1:
+        st.write("This person has heart disease.")
     else:
-        st.success(f'This person does not have heart disease.')
+        st.write("This person does not have heart disease.")
