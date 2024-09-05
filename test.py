@@ -60,10 +60,6 @@ input_data = np.array(input_data).reshape(1, -1)
 st.write("Input Data:")
 st.write(input_data)
 
-# Display the data types of each column
-st.write("Data Types:")
-st.write(input_data.dtypes)
-
 # Check for missing values
 if np.isnan(input_data).any():
     st.write("Warning: Some input fields are missing. Please fill all the fields.")
