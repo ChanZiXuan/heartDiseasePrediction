@@ -56,32 +56,19 @@ def main():
     st.write("Input Data (Pandas DataFrame):")
     st.write(input_data)
 
-    # Ensure input is in correct 2D format for prediction
-    input_array = input_data.to_numpy()
-
-    # Reshape input if necessary
-    if len(input_array.shape) == 1:
-        input_array = input_array.reshape(1, -1)
-
-    # Check if the array is 2D
-    st.write("Reshaped Input Data (NumPy Array):")
-    st.write(input_array)
-
-    # Check for missing values or invalid inputs
-    if np.isnan(input_array).any():
-        st.write("Warning: Some input fields are missing or invalid.")
-    else:
-        # When the user clicks the 'Predict' button, make the prediction
-        if st.button("Predict Heart Disease"):
-            try:
-                prediction = lr_model.predict(input_array)
-                # Show the result
-                if prediction[0] == 1:
-                    st.write("The model predicts that this person has heart disease.")
-                else:
-                    st.write("The model predicts that this person does not have heart disease.")
-            except Exception as e:
-                st.write(f"An error occurred: {e}")
+    # Ensure the input is a DataFrame and in 2D format for prediction
+    # Use the DataFrame directly for prediction instead of converting to NumPy array
+    if st.button("Predict Heart Disease"):
+        try:
+            # Use the model to make a prediction
+            prediction = lr_model.predict(input_data)
+            # Show the result
+            if prediction[0] == 1:
+                st.write("The model predicts that this person has heart disease.")
+            else:
+                st.write("The model predicts that this person does not have heart disease.")
+        except Exception as e:
+            st.write(f"An error occurred: {e}")
 
 if __name__ == '__main__':
     main()
