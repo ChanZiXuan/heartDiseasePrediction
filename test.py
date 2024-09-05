@@ -48,6 +48,6 @@ if st.button("Predict Heart Disease"):
 
     # Display prediction result
     if prediction[0] == 1:
-        st.write("This person has heart disease.")
+        st.success(f'This person has heart disease.')
     else:
-        st.write("This person does not have heart disease.")
+        st.success(f'This person does not have heart disease.')
