@@ -53,9 +53,23 @@ input_data = pd.DataFrame({
     'ST_Slope': [st_slope]
 })
 
-if st.button("Predict Heart Disease"):
-    prediction = lr_model.predict(input_data)
-    if prediction[0] == 1:
-        st.write("The model predicts that this person has heart disease.")
-    else:
-        st.write("The model predicts that this person does not have heart disease.")
+# Check if the input data contains any invalid types
+st.write("Input Data:")
+st.write(input_data)
+
+# Check for missing values
+if input_data.isnull().values.any():
+    st.write("Warning: Some input fields are missing. Please fill all the fields.")
+else:
+    # When the user clicks the 'Predict' button, make the prediction
+    if st.button("Predict Heart Disease"):
+        # Use the model to make a prediction
+        try:
+            prediction = model.predict(input_data)
+            # Show the result
+            if prediction[0] == 1:
+                st.write("The model predicts that this person has heart disease.")
+            else:
+                st.write("The model predicts that this person does not have heart disease.")
+        except Exception as e:
+            st.write(f"An error occurred: {e}")
