@@ -53,6 +53,9 @@ input_data = pd.DataFrame({
     'ST_Slope': [st_slope]
 })
 
+# Ensure input data is a 2D array (reshape)
+input_data = np.array(input_data).reshape(1, -1)
+
 # Check if the input data contains any invalid types
 st.write("Input Data:")
 st.write(input_data)
@@ -62,7 +65,7 @@ st.write("Data Types:")
 st.write(input_data.dtypes)
 
 # Check for missing values
-if input_data.isnull().values.any():
+if np.isnan(input_data).any():
     st.write("Warning: Some input fields are missing. Please fill all the fields.")
 else:
     # When the user clicks the 'Predict' button, make the prediction
