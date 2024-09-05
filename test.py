@@ -64,6 +64,14 @@ input_array = input_data.to_numpy()
 st.write("Converted Input Data (NumPy Array):")
 st.write(input_array)
 
+# Ensure input is a 2D array for prediction
+if len(input_array.shape) == 1:
+    input_array = input_array.reshape(1, -1)
+
+# Check if the array is 2D (For prediction purposes)
+st.write("Reshaped Input Data (NumPy Array):")
+st.write(input_array)
+
 # Check for missing values or invalid inputs
 if np.isnan(input_array).any():
     st.write("Warning: Some input fields are missing or invalid.")
