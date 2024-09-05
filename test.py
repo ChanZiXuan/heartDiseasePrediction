@@ -12,7 +12,7 @@ lr_model = joblib.load('heartdisease_logisticregression.joblib')
 # Streamlit application starts here
 def main():
     # Title of your web app
-    st.title("Heart Disease Prediction")
+    st.title('Heart Disease Prediction')
 
 # Collect user input
 age = st.number_input("Enter your age:", min_value=0, max_value=120, step=1)
