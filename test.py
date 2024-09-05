@@ -59,18 +59,22 @@ def main():
     st.write("Input Data (Pandas DataFrame):")
     st.write(input_data)
 
+    # Check for missing values or invalid inputs
+    if np.isnan(input_data).any():
+        st.write("Warning: Some input fields are missing or invalid.")
+    else:
     # When the user clicks the 'Predict' button, make the prediction
-    if st.button("Predict Heart Disease"):
-        try:
-            # Use the model to make a prediction
-            prediction = lr_model.predict(input_data)
-            # Show the result
-            if prediction[0] == 1:
-                st.write("The model predicts that this person has heart disease.")
-            else:
-                st.write("The model predicts that this person does not have heart disease.")
-        except Exception as e:
-            st.write(f"An error occurred: {e}")
+        if st.button("Predict Heart Disease"):
+            try:
+                # Use the model to make a prediction
+                prediction = lr_model.predict(input_data)
+                # Show the result
+                if prediction[0] == 1:
+                    st.write("The model predicts that this person has heart disease.")
+                else:
+                    st.write("The model predicts that this person does not have heart disease.")
+            except Exception as e:
+                st.write(f"An error occurred: {e}")
 
-if __name__ == '__main__':
-    main()
+    if __name__ == '__main__':
+        main()
