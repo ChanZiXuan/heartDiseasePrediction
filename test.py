@@ -52,12 +52,14 @@ def main():
         'ST_Slope': [st_slope]
     })
 
+   # Ensure all columns are numeric by converting to float
+    input_data = input_data.astype(float)
+
     # Check the input data structure
     st.write("Input Data (Pandas DataFrame):")
     st.write(input_data)
 
-    # Ensure the input is a DataFrame and in 2D format for prediction
-    # Use the DataFrame directly for prediction instead of converting to NumPy array
+    # When the user clicks the 'Predict' button, make the prediction
     if st.button("Predict Heart Disease"):
         try:
             # Use the model to make a prediction
