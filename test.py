@@ -39,13 +39,9 @@ st_slope = st_slope_mapping[st_slope]
 
 input_data = np.array([[age, sex, chest_pain_type, resting_bp, cholesterol, fasting_bs, resting_ecg, max_hr, exercise_angina, oldpeak, st_slope]])
     
-# Predict Button
 if st.button("Predict Heart Disease"):
-    # Make prediction
-     prediction = lr_model.predict(input_data)
-
-    # Display prediction result
+    prediction = lr_model.predict(input_data)
     if prediction[0] == 1:
-        st.write("This person has heart disease.")
+        st.write("The model predicts that this person has heart disease.")
     else:
-        st.write("This person does not have heart disease.")
+        st.write("The model predicts that this person does not have heart disease.")
