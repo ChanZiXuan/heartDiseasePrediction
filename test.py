@@ -57,6 +57,10 @@ input_data = pd.DataFrame({
 st.write("Input Data:")
 st.write(input_data)
 
+# Display the data types of each column
+st.write("Data Types:")
+st.write(input_data.dtypes)
+
 # Check for missing values
 if input_data.isnull().values.any():
     st.write("Warning: Some input fields are missing. Please fill all the fields.")
