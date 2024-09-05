@@ -68,7 +68,7 @@ input_data = np.array([[age, sex, chest_pain_type, resting_bp, cholesterol, fast
 # Predict Button
 if st.button("Predict Heart Disease"):
     # Make prediction
-    prediction = model.predict(input_data)
+    prediction = lr_model.predict(input_data)
 
     # Display prediction result
     if prediction[0] == 1:
