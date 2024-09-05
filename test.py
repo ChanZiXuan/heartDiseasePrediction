@@ -65,7 +65,7 @@ else:
     if st.button("Predict Heart Disease"):
         # Use the model to make a prediction
         try:
-            prediction = model.predict(input_data)
+            prediction = lr_model.predict(input_data)
             # Show the result
             if prediction[0] == 1:
                 st.write("The model predicts that this person has heart disease.")
