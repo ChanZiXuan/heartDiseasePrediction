@@ -17,7 +17,7 @@ def main():
     resting_bp = st.number_input("Enter resting blood pressure (mm Hg):", min_value=50, max_value=250, step=1)
     cholesterol = st.number_input("Enter cholesterol (mg/dL):", min_value=100, max_value=600, step=1)
     fasting_bs = st.selectbox("Fasting blood sugar > 120 mg/dL:", (0, 1))
-    resting_ecg = st.selectbox("Select resting ECG result:", ("Normal", "ST ", "LVH"))
+    resting_ecg = st.selectbox("Select resting ECG result:", ("Normal", "ST", "LVH"))
     max_hr = st.number_input("Enter maximum heart rate achieved:", min_value=50, max_value=220, step=1)
     exercise_angina = st.selectbox("Do you have exercise-induced angina?", ("Yes", "No"))
     oldpeak = st.number_input("Enter oldpeak (ST depression):", min_value=0.0, max_value=10.0, step=0.1, format="%.1f")
