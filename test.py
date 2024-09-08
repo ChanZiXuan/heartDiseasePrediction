@@ -17,7 +17,7 @@ def main():
     resting_bp = st.number_input("Enter resting blood pressure (mm Hg):", min_value=50, max_value=250, step=1)
     cholesterol = st.number_input("Enter cholesterol (mg/dL):", min_value=100, max_value=600, step=1)
     fasting_bs = st.selectbox("Fasting blood sugar > 120 mg/dL:", (0, 1))
-    resting_ecg = st.selectbox("Select resting ECG result:", ("Normal", "ST ", "LVH"))
+    resting_ecg = st.selectbox("Select resting ECG result:", ("Normal", "ST", "LVH"))
     max_hr = st.number_input("Enter maximum heart rate achieved:", min_value=50, max_value=220, step=1)
     exercise_angina = st.selectbox("Do you have exercise-induced angina?", ("Yes", "No"))
     oldpeak = st.number_input("Enter oldpeak (ST depression):", min_value=0.0, max_value=10.0, step=0.1, format="%.1f")
@@ -48,37 +48,32 @@ def main():
         'ST_Slope': [st_slope]
     })
 
-    # Debug: Print data types of input
-    st.write("Data Types Before Conversion:")
-    st.write(input_data.dtypes)
+    # Ensure all values are converted to float64
+    input_data = input_data.astype('float64')
 
-    # Attempt to convert all columns to numeric
-    try:
-        input_data = input_data.apply(pd.to_numeric)
-    except Exception as e:
-        st.write(f"Error converting input data to numeric: {e}")
-
-    # Debug: Print data types after conversion
+    # Check the input data structure
+    st.write("Input Data (Pandas DataFrame):")
+    st.write(input_data)
     st.write("Data Types After Conversion:")
     st.write(input_data.dtypes)
 
-    # Debug: Check for NaN values
-    st.write("Checking for NaN values:")
-    st.write(input_data.isnull())
+    # Check for NaN values
+    if input_data.isnull().values.any():
+        st.write("Warning: There are missing or invalid input values.")
+    else:
+        # When the user clicks the 'Predict' button, make the prediction
+        if st.button("Predict Heart Disease"):
+            try:
+                # Use the model to make a prediction
+                prediction = lr_model.predict(input_data)
 
-    # When the user clicks the 'Predict' button, make the prediction
-    if st.button("Predict Heart Disease"):
-        try:
-            # Use the model to make a prediction
-            prediction = lr_model.predict(input_data)
-
-            # Show the result
-            if prediction[0] == 1:
-                st.write('The model predicts that this person has heart disease.')
-            else:
-                st.write('The model predicts that this person does not have heart disease.')
-        except Exception as e:
-            st.write(f"An error occurred during prediction: {e}")
+                # Show the result
+                if prediction[0] == 1:
+                    st.write('The model predicts that this person has heart disease.')
+                else:
+                    st.write('The model predicts that this person does not have heart disease.')
+            except Exception as e:
+                st.write(f"An error occurred during prediction: {e}")
 
 if __name__ == '__main__':
     main()
