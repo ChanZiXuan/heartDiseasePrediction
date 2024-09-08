@@ -1,6 +1,7 @@
 import streamlit as st
 from joblib import load
 import pandas as pd
+import numpy as np
 import joblib
 
 # Load your logistic regression model
@@ -34,7 +35,7 @@ def main():
     st_slope_mapping = {"Up": 0, "Flat": 1, "Down": 2}
     st_slope = st_slope_mapping[st_slope]
 
-    # Create a pandas DataFrame from the input data with the correct column names
+    # Create a pandas DataFrame from the input data with correct column names
     input_data = pd.DataFrame({
         'Age': [age],
         'Sex': [sex],
@@ -49,23 +50,30 @@ def main():
         'ST_Slope': [st_slope]
     })
 
+    # Ensure all columns are of type float or int
+    input_data = input_data.astype(float)
+
     # Check the input data structure
     st.write("Input Data (Pandas DataFrame):")
     st.write(input_data)
 
-    # When the user clicks the 'Predict' button, make the prediction
-    if st.button("Predict Heart Disease"):
-        try:
-            # Use the model to make a prediction with the DataFrame directly
-            prediction = lr_model.predict(input_data)
+    # Check for NaN or invalid inputs before prediction
+    if input_data.isnull().values.any():
+        st.write("Error: Please ensure all fields are filled correctly.")
+    else:
+        # When the user clicks the 'Predict' button, make the prediction
+        if st.button("Predict Heart Disease"):
+            try:
+                # Use the model to make a prediction with the DataFrame
+                prediction = lr_model.predict(input_data)
 
-            # Show the result
-            if prediction[0] == 1:
-                st.write('The model predicts that this person has heart disease.')
-            else:
-                st.write('The model predicts that this person does not have heart disease.')
-        except Exception as e:
-            st.write(f"An error occurred: {e}")
+                # Show the result
+                if prediction[0] == 1:
+                    st.write('The model predicts that this person has heart disease.')
+                else:
+                    st.write('The model predicts that this person does not have heart disease.')
+            except Exception as e:
+                st.write(f"An error occurred: {e}")
 
 if __name__ == '__main__':
     main()
