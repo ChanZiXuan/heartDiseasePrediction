@@ -24,7 +24,7 @@ def main():
     resting_ecg = st.selectbox("Select resting ECG result:", ("Normal", "ST-T wave abnormality", "Left ventricular hypertrophy"))
     max_hr = st.number_input("Enter maximum heart rate achieved:", min_value=50, max_value=220, step=1)
     exercise_angina = st.selectbox("Do you have exercise-induced angina?", ("Yes", "No"))
-    oldpeak = st.number_input("Enter oldpeak (ST depression):", min_value=0.0, max_value=10.0, step=0.1)
+    oldpeak = st.number_input("Enter oldpeak (ST depression):", min_value=0.0, max_value=10.0, step=0.1, format="%.1f")
     st_slope = st.selectbox("Select the slope of the peak exercise ST segment:", ("Up", "Flat", "Down"))
 
     # Convert categorical inputs to numerical values
