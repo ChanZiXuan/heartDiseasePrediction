@@ -64,7 +64,7 @@ def main():
         st.write("Warning: Some input fields are missing or invalid.")
     else:
  # When the user clicks the 'Predict' button, make the prediction
-    if st.button("Predict Heart Disease"):
+     if st.button("Predict Heart Disease"):
         try:
             # Use the model to make a prediction
             prediction = lr_model.predict(input_data)
