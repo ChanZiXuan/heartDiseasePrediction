@@ -1,7 +1,6 @@
 import streamlit as st
 from joblib import load
 import pandas as pd
-import numpy as np
 import joblib
 
 # Load your logistic regression model
@@ -35,7 +34,7 @@ def main():
     st_slope_mapping = {"Up": 0, "Flat": 1, "Down": 2}
     st_slope = st_slope_mapping[st_slope]
 
-    # Create a pandas DataFrame from the input data
+    # Create a pandas DataFrame from the input data with the correct column names
     input_data = pd.DataFrame({
         'Age': [age],
         'Sex': [sex],
@@ -50,9 +49,6 @@ def main():
         'ST_Slope': [st_slope]
     })
 
-    # Ensure input data is in correct shape for prediction
-    input_array = input_data.to_numpy()
-
     # Check the input data structure
     st.write("Input Data (Pandas DataFrame):")
     st.write(input_data)
@@ -60,13 +56,9 @@ def main():
     # When the user clicks the 'Predict' button, make the prediction
     if st.button("Predict Heart Disease"):
         try:
-            # Ensure the input is a 2D array
-            if input_array.ndim == 1:
-                input_array = input_array.reshape(1, -1)
-            
-            # Use the model to make a prediction
-            prediction = lr_model.predict(input_array)
-            
+            # Use the model to make a prediction with the DataFrame directly
+            prediction = lr_model.predict(input_data)
+
             # Show the result
             if prediction[0] == 1:
                 st.write('The model predicts that this person has heart disease.')
