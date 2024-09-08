@@ -1,77 +1,69 @@
 import streamlit as st
-from joblib import load
 import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.ticker as ticker
+from joblib import load
 
-# Load your logistic regression model
-Model = joblib.load('heartdisease_logisticregression.joblib')
+# Load the logistic regression model with preprocessing steps included
+lr_model = load('heartdisease_logisticregression.joblib')
 
 # Streamlit application starts here
 def main():
-    # Title of your web app
-    st.title("Heart Disease Prediction")
+    st.title('Heart Disease Prediction')
 
-# Age (Numeric)
-age = st.number_input("Enter your age:", min_value=0, max_value=120, step=1)
+    # Collect user input
+    age = st.number_input("Enter your age:", min_value=0, max_value=120, step=1)
+    sex = st.selectbox("Select your sex:", ("Male", "Female"))
+    chest_pain_type = st.selectbox("Select chest pain type:", ("TA", "ATA", "NAP", "ASY"))
+    resting_bp = st.number_input("Enter resting blood pressure (mm Hg):", min_value=50, max_value=250, step=1)
+    cholesterol = st.number_input("Enter cholesterol (mg/dL):", min_value=100, max_value=600, step=1)
+    fasting_bs = st.selectbox("Fasting blood sugar > 120 mg/dL:", (0, 1))
+    resting_ecg = st.selectbox("Select resting ECG result:", ("Normal", "ST", "LVH"))
+    max_hr = st.number_input("Enter maximum heart rate achieved:", min_value=50, max_value=220, step=1)
+    exercise_angina = st.selectbox("Do you have exercise-induced angina?", ("Yes", "No"))
+    oldpeak = st.number_input("Enter oldpeak (ST depression):", min_value=0.0, max_value=10.0, step=0.1, format="%.1f")
+    st_slope = st.selectbox("Select the slope of the peak exercise ST segment:", ("Up", "Flat", "Down"))
 
-# Sex (Categorical)
-sex = st.selectbox("Select your sex:", ("Male", "Female"))
+    # Convert categorical inputs to numerical values for raw input
+    sex = 1 if sex == "Male" else 0
+    chest_pain_type_mapping = {"TA": 0, "ATA": 1, "NAP": 2, "ASY": 3}
+    chest_pain_type = chest_pain_type_mapping[chest_pain_type]
+    resting_ecg_mapping = {"Normal": 0, "ST": 1, "LVH": 2}
+    resting_ecg = resting_ecg_mapping[resting_ecg]
+    exercise_angina = 1 if exercise_angina == "Yes" else 0
+    st_slope_mapping = {"Up": 0, "Flat": 1, "Down": 2}
+    st_slope = st_slope_mapping[st_slope]
 
-# ChestPainType (Categorical)
-chest_pain_type = st.selectbox("Select chest pain type:", 
-                               ("Typical Angina", "Atypical Angina", "Non-anginal Pain", "Asymptomatic"))
+    # Create a DataFrame from the user inputs
+    input_data = pd.DataFrame({
+        'Age': [age],
+        'Sex': [sex],
+        'ChestPainType': [chest_pain_type],
+        'RestingBP': [resting_bp],
+        'Cholesterol': [cholesterol],
+        'FastingBS': [fasting_bs],
+        'RestingECG': [resting_ecg],
+        'MaxHR': [max_hr],
+        'ExerciseAngina': [exercise_angina],
+        'Oldpeak': [oldpeak],
+        'ST_Slope': [st_slope]
+    })
 
-# Resting Blood Pressure (Numeric)
-resting_bp = st.number_input("Enter resting blood pressure (mm Hg):", min_value=50, max_value=250, step=1)
+    # Check the input data structure
+    st.write("Input Data:")
+    st.write(input_data)
 
-# Cholesterol (Numeric)
-cholesterol = st.number_input("Enter cholesterol (mg/dL):", min_value=100, max_value=600, step=1)
+    # When the user clicks the 'Predict' button, make the prediction
+    if st.button("Predict Heart Disease"):
+        try:
+            # Predict using the model
+            prediction = lr_model.predict(input_data)
 
-# Fasting Blood Sugar (Binary)
-fasting_bs = st.selectbox("Fasting blood sugar > 120 mg/dL:", (0, 1))
+            # Show the result
+            if prediction[0] == 1:
+                st.write('The model predicts that this person has heart disease.')
+            else:
+                st.write('The model predicts that this person does not have heart disease.')
+        except Exception as e:
+            st.write(f"An error occurred during prediction: {e}")
 
-# Resting ECG (Categorical)
-resting_ecg = st.selectbox("Select resting ECG result:", 
-                           ("Normal", "ST-T wave abnormality", "Left ventricular hypertrophy"))
-
-# Max Heart Rate (Numeric)
-max_hr = st.number_input("Enter maximum heart rate achieved:", min_value=50, max_value=220, step=1)
-
-# Exercise-Induced Angina (Binary)
-exercise_angina = st.selectbox("Do you have exercise-induced angina?", ("Yes", "No"))
-
-# Oldpeak (Numeric)
-oldpeak = st.number_input("Enter oldpeak (ST depression):", min_value=0.0, max_value=10.0, step=0.1)
-
-# ST Slope (Categorical)
-st_slope = st.selectbox("Select the slope of the peak exercise ST segment:", ("Up", "Flat", "Down"))
-
-# Convert categorical values to numeric form as needed for prediction
-sex = 1 if sex == "Male" else 0
-chest_pain_type_mapping = {"Typical Angina": 0, "Atypical Angina": 1, "Non-anginal Pain": 2, "Asymptomatic": 3}
-chest_pain_type = chest_pain_type_mapping[chest_pain_type]
-
-resting_ecg_mapping = {"Normal": 0, "ST-T wave abnormality": 1, "Left ventricular hypertrophy": 2}
-resting_ecg = resting_ecg_mapping[resting_ecg]
-
-exercise_angina = 1 if exercise_angina == "Yes" else 0
-
-st_slope_mapping = {"Up": 0, "Flat": 1, "Down": 2}
-st_slope = st_slope_mapping[st_slope]
-
-# Prepare the input data as a numpy array (matching the format expected by your model)
-input_data = np.array([[age, sex, chest_pain_type, resting_bp, cholesterol, fasting_bs, resting_ecg, 
-                        max_hr, exercise_angina, oldpeak, st_slope]])
-
-# Predict Button
-if st.button("Predict Heart Disease"):
-    # Make prediction
-    prediction = model.predict(input_data)
-
-    # Display prediction result
-    if prediction[0] == 1:
-        st.write("This person has heart disease.")
-    else:
-        st.write("This person does not have heart disease.")
+if __name__ == '__main__':
+    main()
