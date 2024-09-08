@@ -13,24 +13,24 @@ def main():
 
     # Collect user input
     age = st.number_input("Enter your age:", min_value=0, max_value=120, step=1)
-    sex = st.selectbox("Select your sex:", ("Male", "Female"))
+    sex = st.selectbox("Select your sex:", ("M", "F"))
     chest_pain_type = st.selectbox("Select chest pain type:", ("TA", "ATA", "NAP", "ASY"))
     resting_bp = st.number_input("Enter resting blood pressure (mm Hg):", min_value=50, max_value=250, step=1)
     cholesterol = st.number_input("Enter cholesterol (mg/dL):", min_value=100, max_value=600, step=1)
     fasting_bs = st.selectbox("Fasting blood sugar > 120 mg/dL:", (0, 1))
     resting_ecg = st.selectbox("Select resting ECG result:", ("Normal", "ST ", "LVH"))
     max_hr = st.number_input("Enter maximum heart rate achieved:", min_value=50, max_value=220, step=1)
-    exercise_angina = st.selectbox("Do you have exercise-induced angina?", ("Yes", "No"))
+    exercise_angina = st.selectbox("Do you have exercise-induced angina?", ("Y", "N"))
     oldpeak = st.number_input("Enter oldpeak (ST depression):", min_value=0.0, max_value=10.0, step=0.1, format="%.1f")
     st_slope = st.selectbox("Select the slope of the peak exercise ST segment:", ("Up", "Flat", "Down"))
 
     # Convert categorical inputs to numerical values
-    sex = 1 if sex == "Male" else 0
+    sex = 1 if sex == "M" else 0
     chest_pain_type_mapping = {"TA": 0, "ATA": 1, "NAP": 2, "ASY": 3}
     chest_pain_type = chest_pain_type_mapping[chest_pain_type]
     resting_ecg_mapping = {"Normal": 0, "ST": 1, "LVH": 2}
     resting_ecg = resting_ecg_mapping[resting_ecg]
-    exercise_angina = 1 if exercise_angina == "Yes" else 0
+    exercise_angina = 1 if exercise_angina == "Y" else 0
     st_slope_mapping = {"Up": 0, "Flat": 1, "Down": 2}
     st_slope = st_slope_mapping[st_slope]
 
