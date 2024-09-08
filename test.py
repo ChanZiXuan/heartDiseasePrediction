@@ -52,8 +52,8 @@ def main():
         'ST_Slope': [st_slope]
     })
 
-   # Ensure all columns are numeric by converting to float
-    input_data = input_data.astype(float)
+   # # Ensure all columns are numeric by converting to float
+   #  input_data = input_data.astype(float)
 
     # Check the input data structure
     st.write("Input Data (Pandas DataFrame):")
