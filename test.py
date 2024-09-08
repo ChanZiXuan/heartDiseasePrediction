@@ -59,11 +59,10 @@ def main():
     st.write("Input Data (Pandas DataFrame):")
     st.write(input_data)
 
-  # # Check for missing values or invalid inputs
-  #   if np.isnan(input_data).any():
-  #       st.write("Warning: Some input fields are missing or invalid.")
-  #   else:
-        # When the user clicks the 'Predict' button, make the prediction
+  # Check for missing values or invalid inputs
+    if np.isnan(input_data).any():
+        st.write("Warning: Some input fields are missing or invalid.")
+    else:
  # When the user clicks the 'Predict' button, make the prediction
     if st.button("Predict Heart Disease"):
         try:
