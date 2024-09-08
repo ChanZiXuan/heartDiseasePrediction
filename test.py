@@ -2,8 +2,6 @@ import streamlit as st
 from joblib import load
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.ticker as ticker
 import joblib
 
 # Load your logistic regression model
@@ -52,18 +50,23 @@ def main():
         'ST_Slope': [st_slope]
     })
 
-   # # Ensure all columns are numeric by converting to float
-   #  input_data = input_data.astype(float)
+    # Ensure input data is in correct shape for prediction
+    input_array = input_data.to_numpy()
 
     # Check the input data structure
     st.write("Input Data (Pandas DataFrame):")
     st.write(input_data)
 
- # When the user clicks the 'Predict' button, make the prediction
+    # When the user clicks the 'Predict' button, make the prediction
     if st.button("Predict Heart Disease"):
         try:
+            # Ensure the input is a 2D array
+            if input_array.ndim == 1:
+                input_array = input_array.reshape(1, -1)
+            
             # Use the model to make a prediction
-            prediction = lr_model.predict(input_data)
+            prediction = lr_model.predict(input_array)
+            
             # Show the result
             if prediction[0] == 1:
                 st.write('The model predicts that this person has heart disease.')
