@@ -1,8 +1,9 @@
 import streamlit as st
-import pandas as pd
 from joblib import load
+import pandas as pd
+import numpy as np
 
-# Load the logistic regression model with preprocessing steps included
+# Load your logistic regression model
 lr_model = load('heartdisease_logisticregression.joblib')
 
 # Streamlit application starts here
@@ -16,13 +17,13 @@ def main():
     resting_bp = st.number_input("Enter resting blood pressure (mm Hg):", min_value=50, max_value=250, step=1)
     cholesterol = st.number_input("Enter cholesterol (mg/dL):", min_value=100, max_value=600, step=1)
     fasting_bs = st.selectbox("Fasting blood sugar > 120 mg/dL:", (0, 1))
-    resting_ecg = st.selectbox("Select resting ECG result:", ("Normal", "ST", "LVH"))
+    resting_ecg = st.selectbox("Select resting ECG result:", ("Normal", "ST ", "LVH"))
     max_hr = st.number_input("Enter maximum heart rate achieved:", min_value=50, max_value=220, step=1)
     exercise_angina = st.selectbox("Do you have exercise-induced angina?", ("Yes", "No"))
     oldpeak = st.number_input("Enter oldpeak (ST depression):", min_value=0.0, max_value=10.0, step=0.1, format="%.1f")
     st_slope = st.selectbox("Select the slope of the peak exercise ST segment:", ("Up", "Flat", "Down"))
 
-    # Convert categorical inputs to numerical values for raw input
+    # Convert categorical inputs to numerical values
     sex = 1 if sex == "Male" else 0
     chest_pain_type_mapping = {"TA": 0, "ATA": 1, "NAP": 2, "ASY": 3}
     chest_pain_type = chest_pain_type_mapping[chest_pain_type]
@@ -32,7 +33,7 @@ def main():
     st_slope_mapping = {"Up": 0, "Flat": 1, "Down": 2}
     st_slope = st_slope_mapping[st_slope]
 
-    # Create a DataFrame from the user inputs
+    # Create a pandas DataFrame from the input data
     input_data = pd.DataFrame({
         'Age': [age],
         'Sex': [sex],
@@ -47,14 +48,28 @@ def main():
         'ST_Slope': [st_slope]
     })
 
-    # Check the input data structure
-    st.write("Input Data:")
-    st.write(input_data)
+    # Debug: Print data types of input
+    st.write("Data Types Before Conversion:")
+    st.write(input_data.dtypes)
+
+    # Attempt to convert all columns to numeric
+    try:
+        input_data = input_data.apply(pd.to_numeric)
+    except Exception as e:
+        st.write(f"Error converting input data to numeric: {e}")
+
+    # Debug: Print data types after conversion
+    st.write("Data Types After Conversion:")
+    st.write(input_data.dtypes)
+
+    # Debug: Check for NaN values
+    st.write("Checking for NaN values:")
+    st.write(input_data.isnull())
 
     # When the user clicks the 'Predict' button, make the prediction
     if st.button("Predict Heart Disease"):
         try:
-            # Predict using the model
+            # Use the model to make a prediction
             prediction = lr_model.predict(input_data)
 
             # Show the result
