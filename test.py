@@ -66,7 +66,7 @@ def main():
             else:
                 st.write('The model predicts that this person does not have heart disease.')
         except Exception as e:
-            st.write(f"An error occurred during prediction: {e}")
+            st.write(f'An error occurred during prediction: {e}')
 
 if __name__ == '__main__':
     main()
