@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from joblib import load
+import numpy as np
 
 # Load the logistic regression model with preprocessing steps included
 lr_model = load('heartdisease_logisticregression.joblib')
@@ -47,8 +48,20 @@ def main():
         'ST_Slope': [st_slope]
     })
 
-    # Ensure the input data is numeric by converting to float
-    input_data = input_data.astype(float)
+    # Check for NaN or non-numeric values before converting to float
+    st.write("Checking for NaN or invalid input values:")
+    st.write(input_data.isna())
+    st.write("Data types before conversion:")
+    st.write(input_data.dtypes)
+
+    # Try casting to float and catch any errors
+    try:
+        input_data = input_data.astype(float)
+        st.write("Data after conversion to float:")
+        st.write(input_data.dtypes)
+    except Exception as e:
+        st.write(f"Error during data type conversion: {e}")
+        return
 
     # Check the input data structure
     st.write("Input Data (Pandas DataFrame):")
