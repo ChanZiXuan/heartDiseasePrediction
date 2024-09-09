@@ -1,9 +1,8 @@
 import streamlit as st
-from joblib import load
 import pandas as pd
-import numpy as np
+from joblib import load
 
-# Load your logistic regression model
+# Load the logistic regression model with preprocessing steps included
 lr_model = load('heartdisease_logisticregression.joblib')
 
 # Streamlit application starts here
@@ -48,28 +47,17 @@ def main():
         'ST_Slope': [st_slope]
     })
 
-    # Debug: Print data types of input
-    st.write("Data Types Before Conversion:")
-    st.write(input_data.dtypes)
+    # Ensure the input data is numeric by converting to float
+    input_data = input_data.astype(float)
 
-    # Attempt to convert all columns to numeric
-    try:
-        input_data = input_data.apply(pd.to_numeric)
-    except Exception as e:
-        st.write(f"Error converting input data to numeric: {e}")
-
-    # Debug: Print data types after conversion
-    st.write("Data Types After Conversion:")
-    st.write(input_data.dtypes)
-
-    # Debug: Check for NaN values
-    st.write("Checking for NaN values:")
-    st.write(input_data.isnull())
+    # Check the input data structure
+    st.write("Input Data (Pandas DataFrame):")
+    st.write(input_data)
 
     # When the user clicks the 'Predict' button, make the prediction
     if st.button("Predict Heart Disease"):
         try:
-            # Use the model to make a prediction
+            # Predict using the model
             prediction = lr_model.predict(input_data)
 
             # Show the result
