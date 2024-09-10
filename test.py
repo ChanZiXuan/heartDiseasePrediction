@@ -54,15 +54,6 @@ def main():
     st.write("Data types before conversion:")
     st.write(input_data.dtypes)
 
-    # Try casting to float and catch any errors
-    try:
-        input_data = input_data.astype(float)
-        st.write("Data after conversion to float:")
-        st.write(input_data.dtypes)
-    except Exception as e:
-        st.write(f"Error during data type conversion: {e}")
-        return
-
     # Check the input data structure
     st.write("Input Data (Pandas DataFrame):")
     st.write(input_data)
