@@ -48,8 +48,15 @@ def main():
         'Oldpeak': [oldpeak],
         'ST_Slope': [st_slope]
     })
-
- input_data_scaled = scaler.transform(input_data)
+    
+    # Apply scaling to the input data
+    try:
+        input_data_scaled = scaler.transform(input_data)
+        st.write("Scaled Input Data (after applying scaler):")
+        st.write(input_data_scaled)
+    except Exception as e:
+        st.write(f'An error occurred during scaling: {e}')
+        return
 
     # When the user clicks the 'Predict' button, make the prediction
     if st.button("Predict Heart Disease"):
