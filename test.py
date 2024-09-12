@@ -5,6 +5,7 @@ import numpy as np
 
 # Load the logistic regression model with preprocessing steps included
 lr_model = load('heartdisease_logisticregression.joblib')
+scaler = load('oldscaler.joblib')
 
 # Streamlit application starts here
 def main():
@@ -48,21 +49,12 @@ def main():
         'ST_Slope': [st_slope]
     })
 
-    # Check for NaN or non-numeric values before converting to float
-    st.write("Checking for NaN or invalid input values:")
-    st.write(input_data.isna())
-    st.write("Data types before conversion:")
-    st.write(input_data.dtypes)
-
-    # Check the input data structure
-    st.write("Input Data (Pandas DataFrame):")
-    st.write(input_data)
-
+   input_data_scaled = scaler.transform(input_data)
     # When the user clicks the 'Predict' button, make the prediction
     if st.button("Predict Heart Disease"):
         try:
             # Predict using the model
-            prediction = lr_model.predict(input_data)
+            prediction = lr_model.predict(input_data_scaled)
 
             # Show the result
             if prediction[0] == 1:
