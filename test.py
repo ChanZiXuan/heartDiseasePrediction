@@ -49,7 +49,8 @@ def main():
         'ST_Slope': [st_slope]
     })
 
-   input_data_scaled = scaler.transform(input_data)
+input_data_scaled = scaler.transform(input_data)
+
     # When the user clicks the 'Predict' button, make the prediction
     if st.button("Predict Heart Disease"):
         try:
